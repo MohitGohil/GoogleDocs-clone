@@ -1,5 +1,5 @@
-// const mongoose = require("mongoose");
-// const Document = require("./Document");
+const mongoose = require("mongoose");
+const Document = require("./Document");
 
 const io = require("socket.io")(3001, {
   cors: {
@@ -21,10 +21,10 @@ io.on("connection", (socket) => {
   console.log("Client connected");
 
   socket.on("get-document", async (documentId) => {
-    // const Document = await findOrCreateDocument(documentId);
-    const data = "";
+    // const document = await findOrCreateDocument(documentId); //when mangoose is connected, this will be executed
+    const data = ""; // without mongoose
     socket.join(documentId);
-    socket.emit("load-document", data /*document.data*/);
+    socket.emit("load-document" /*, document.data*/);
 
     socket.on("send-changes", (delta) => {
       // console.log(delta);
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
     });
 
     // socket.on("save-document", async (data) => {
-    //   await Document.findOrCreateDocument(documentId, { data });
+    //   await Document.findByIdAndUpdate(documentId, { data });
     // });
   });
 
@@ -42,8 +42,9 @@ io.on("connection", (socket) => {
 });
 
 // async function findOrCreateDocument(id) {
+//   console.log(id);
 //   if (id == null) return;
-//   const document = await Document.findById(id);
+//   // const document = await Document.find({ _id: mongoose.ObjectId(id) });
 //   if (document) return document;
 //   return await Document.create({ _id: id, data: defaultValue });
 // }
